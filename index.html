@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Priyanka & Sai Kumar Wedding</title>
+    <title>Sai Kumar & Priyanka Wedding</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -93,6 +93,51 @@
             svg += `>${svgContent[name]}</svg>`;
             return svg;
         }
+
+        // --- Core JavaScript for Map Logic ---
+        function setMapLinks() {
+            // Function to check if the device is iOS
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            // Function to check if the device is Android
+            const isAndroid = /Android/.test(navigator.userAgent);
+
+            // Mapping event names to their coordinates/queries (UPDATED WITH USER'S COORDINATES)
+            const mapData = {
+                // Coordinates derived from user's first URL (15.755838, 80.343663)
+                'haldi-map': { q: 'Haldi Ceremony Venue', lat: 15.755838, lon: 80.343663 },
+                'sangeeth-map': { q: 'Sangeeth Night Venue', lat: 15.755838, lon: 80.343663 },
+                'wedding-map': { q: 'Sai Kumar\'s Residence', lat: 15.755838, lon: 80.343663 },
+                
+                // Coordinates derived from user's second URL (17.6789045, 83.1965522)
+                'reception-map': { q: 'Srinivas Function Hall, Gajuwaka', lat: 17.6789045, lon: 83.1965522 }
+            };
+
+            for (const id in mapData) {
+                const link = document.getElementById(id);
+                if (!link) continue;
+
+                const { q, lat, lon } = mapData[id];
+
+                let href = '';
+                
+                if (isiOS) {
+                    // iOS prefers Apple Maps deep links with query/name
+                    href = `https://maps.apple.com/?q=${encodeURIComponent(q)}&ll=${lat},${lon}&dirflg=d`;
+                } else if (isAndroid) {
+                    // Android and general use default to Google Maps Search URL
+                    // Note: Google Maps link works better with precise coordinates for navigation
+                    href = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+                } else {
+                    // Fallback for desktop/other devices (Google Maps URL)
+                    href = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+                }
+
+                link.href = href;
+            }
+        }
+        
+        // Run the function when the window loads to ensure all elements are ready
+        window.onload = setMapLinks;
     </script>
 </head>
 <body class="min-h-screen">
@@ -106,9 +151,9 @@
                     <span class="text-3xl mr-2 align-middle">🌸</span> The Beginning of Forever <span class="text-3xl ml-2 align-middle">🌸</span>
                 </p>
                 <h1 class="font-playfair text-6xl md:text-8xl lg:text-9xl font-bold mb-4">
-                    Priyanka
+                    Sai Kumar <!-- GROOM NAME FIRST -->
                     <span class="text-4xl md:text-6xl mx-4">&amp;</span>
-                    Sai Kumar
+                    Priyanka <!-- BRIDE NAME SECOND -->
                 </h1>
                 <p class="text-2xl md:text-3xl font-medium tracking-wider mt-4">20th March 2026</p>
                 <p class="text-sm italic mt-2 opacity-80">We request the pleasure of your company</p>
@@ -124,34 +169,33 @@
         </h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            <!-- BRIDE CARD -->
-            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-2xl transition duration-300">
-                <div class="flex flex-col items-center">
-                    <!-- Placeholder Image for Bride -->
-                    <img src="https://placehold.co/120x120/d4b69c/ffffff?text=Priyanka" 
-                         alt="Priyanka Photo Placeholder" 
-                         class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[#a37c6d] shadow-md"
-                         onerror="this.onerror=null; this.src='https://placehold.co/120x120/d4b69c/ffffff?text=Bride+Photo';"
-                    >
-                    <h3 class="font-playfair text-3xl font-semibold text-[#a37c6d] mb-4">Priyanka (The Bride)</h3>
-                </div>
-                <p class="text-gray-700 mb-3">Daughter of [Smt. & Sri. Mother's/Father's Name]</p>
-                <p class="text-sm italic text-gray-500">"Priyanka is a kind soul with a passion for music and a heart full of joy. She is ready to embark on this new chapter."</p>
-            </div>
             
-            <!-- GROOM CARD -->
+            <!-- GROOM CARD (Now first) -->
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-2xl transition duration-300">
                 <div class="flex flex-col items-center">
-                    <!-- Placeholder Image for Groom -->
-                    <img src="https://placehold.co/120x120/795548/ffffff?text=Sai+Kumar" 
-                         alt="Sai Kumar Photo Placeholder" 
-                         class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[#a37c6d] shadow-md"
-                         onerror="this.onerror=null; this.src='https://placehold.co/120x120/795548/ffffff?text=Groom+Photo';"
+                    <!-- Cartoon Image for Groom (using object-position: right to center the groom's face) -->
+                    <img src="http://googleusercontent.com/image_generation_content/0" 
+                         alt="Sai Kumar Cartoon Image" 
+                         class="w-32 h-32 rounded-full object-cover object-right mb-4 border-4 border-[#a37c6d] shadow-md"
                     >
                     <h3 class="font-playfair text-3xl font-semibold text-[#a37c6d] mb-4">Sai Kumar (The Groom)</h3>
                 </div>
                 <p class="text-gray-700 mb-3">Son of [Smt. & Sri. Mother's/Father's Name]</p>
                 <p class="text-sm italic text-gray-500">"Sai Kumar is a dedicated individual, known for his warm smile and adventurous spirit. He looks forward to building a beautiful life together."</p>
+            </div>
+
+            <!-- BRIDE CARD (Now second) -->
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-2xl transition duration-300">
+                <div class="flex flex-col items-center">
+                    <!-- Cartoon Image for Bride (using object-position: left to center the bride's face) -->
+                    <img src="/resource/bride_profile_mini.png" 
+                         alt="Priyanka Cartoon Image" 
+                         class="w-32 h-32 rounded-full object-cover object-left mb-4 border-4 border-[#a37c6d] shadow-md"
+                    >
+                    <h3 class="font-playfair text-3xl font-semibold text-[#a37c6d] mb-4">Priyanka (The Bride)</h3>
+                </div>
+                <p class="text-gray-700 mb-3">Daughter of [Smt. & Sri. Mother's/Father's Name]</p>
+                <p class="text-sm italic text-gray-500">"Priyanka is a kind soul with a passion for music and a heart full of joy. She is ready to embark on this new chapter."</p>
             </div>
         </div>
     </section>
@@ -173,14 +217,15 @@
                         <h3 class="font-playfair text-2xl font-bold text-[#795548] mb-2">Haldi</h3>
                         <p class="text-lg font-semibold text-gray-800">Thursday, 19th Mar</p>
                         <p class="text-md text-gray-600 mb-4">Morning (Time Placeholder)</p>
-                        <p class="text-sm italic text-gray-700 mb-4">Venue: [Haldi Venue Placeholder]</p>
+                        <!-- Updated venue text -->
+                        <p class="text-sm italic text-gray-700 mb-4">Venue: Bride groom's place</p>
                     </div>
                     <a 
-                        href="https://maps.apple.com/?q=Haldi+Ceremony+Venue&ll=17.7656,83.2974&dirflg=d" 
+                        id="haldi-map"
+                        href="#" 
                         target="_blank" 
                         class="mt-auto block w-full bg-[#a37c6d] hover:bg-[#8d6a5d] text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center justify-center"
                     >
-                        <!-- Map icon updated with simplified classes. Flex container handles alignment. -->
                         <script>document.write(icon('map-pin', { class: 'w-4 h-4 mr-1 stroke-current' }))</script>Map
                     </a>
                 </div>
@@ -192,14 +237,15 @@
                         <h3 class="font-playfair text-2xl font-bold text-[#795548] mb-2">Sangeeth</h3>
                         <p class="text-lg font-semibold text-gray-800">Thursday, 19th Mar</p>
                         <p class="text-md text-gray-600 mb-4">Evening (After 7:30 PM)</p>
-                        <p class="text-sm italic text-gray-700 mb-4">Venue: [Sangeeth Venue Placeholder]</p>
+                        <!-- Updated venue text -->
+                        <p class="text-sm italic text-gray-700 mb-4">Venue: Bride groom's place</p>
                     </div>
                     <a 
-                        href="https://maps.apple.com/?q=Sangeeth+Night+Venue&ll=17.7656,83.2974&dirflg=d" 
+                        id="sangeeth-map"
+                        href="#" 
                         target="_blank" 
                         class="mt-auto block w-full bg-[#a37c6d] hover:bg-[#8d6a5d] text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center justify-center"
                     >
-                        <!-- Map icon updated with simplified classes. Flex container handles alignment. -->
                         <script>document.write(icon('map-pin', { class: 'w-4 h-4 mr-1 stroke-current' }))</script>Map
                     </a>
                 </div>
@@ -211,14 +257,15 @@
                         <h3 class="font-playfair text-2xl font-bold text-[#795548] mb-2">The Wedding</h3>
                         <p class="text-lg font-semibold text-gray-800">Friday, 20th Mar</p>
                         <p class="text-md text-gray-600 mb-4">9:30 PM Onwards</p>
-                        <p class="text-sm italic text-gray-700 mb-4">Venue: Bride groom's place</p>
+                        <!-- Updated venue text -->
+                        <p class="text-sm italic text-gray-700 mb-4">Venue: Bride groom's place </p>
                     </div>
                     <a 
-                        href="https://maps.apple.com/?q=Sai+Kumar's+Residence&ll=17.7656,83.2974&dirflg=d" 
+                        id="wedding-map"
+                        href="#" 
                         target="_blank" 
                         class="mt-auto block w-full bg-[#a37c6d] hover:bg-[#8d6a5d] text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center justify-center"
                     >
-                        <!-- Map icon updated with simplified classes. Flex container handles alignment. -->
                         <script>document.write(icon('map-pin', { class: 'w-4 h-4 mr-1 stroke-current' }))</script>Map
                     </a>
                 </div>
@@ -230,14 +277,15 @@
                         <h3 class="font-playfair text-2xl font-bold text-[#795548] mb-2">Reception</h3>
                         <p class="text-lg font-semibold text-gray-800">Sunday, 29th Mar</p>
                         <p class="text-md text-gray-600 mb-4">Noon Onwards (Lunch)</p>
-                        <p class="text-sm italic text-gray-700 mb-4">Venue: Gajuwaka</p>
+                        <!-- Updated venue text -->
+                        <p class="text-sm italic text-gray-700 mb-4">Venue: Srinivas Function Hall, Chinagantyada, Gajuwaka</p>
                     </div>
                     <a 
-                        href="https://maps.apple.com/?q=Gajuwaka+Reception+Venue&ll=17.7029,83.2185&dirflg=d" 
+                        id="reception-map"
+                        href="#" 
                         target="_blank" 
                         class="mt-auto block w-full bg-[#a37c6d] hover:bg-[#8d6a5d] text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center justify-center"
                     >
-                        <!-- Map icon updated with simplified classes. Flex container handles alignment. -->
                         <script>document.write(icon('map-pin', { class: 'w-4 h-4 mr-1 stroke-current' }))</script>Map
                     </a>
                 </div>
@@ -267,7 +315,7 @@
     <!-- FOOTER -->
     <footer class="bg-[#795548] text-white py-6 mt-12">
         <div class="max-w-6xl mx-auto px-4">
-            <p class="text-center text-sm">&copy; 2026 Priyanka & Sai Kumar. Thank you for being a part of our journey.</p>
+            <p class="text-center text-sm">&copy; 2026 Sai Kumar & Priyanka. Thank you for being a part of our journey.</p>
         </div>
     </footer>
 
